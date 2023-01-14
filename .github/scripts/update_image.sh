@@ -1,4 +1,3 @@
-#!/bin/bash
 
 BOT_NAME=$1
 PATH=$2
