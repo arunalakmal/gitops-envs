@@ -26,7 +26,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           echo deploying to dev environment...!!!
-          bash scripts/update_image.sh "Jarvis" envs/overlay/dev nginx ${{ github.event.inputs.image_tag }}
+          bash .github/scripts/update_image.sh "Jarvis" envs/overlay/dev nginx ${{ github.event.inputs.image_tag }}
           # git config --global user.name "Jarvis"
           # git config --global user.email "jarvis@starkindustries.com"
           # pushd envs/overlay/dev
@@ -40,7 +40,7 @@ jobs:
         if: ${{ github.event_name == 'repository_dispatch' }}
         run: |
           echo deploying to dev environment...!!!
-          bash scripts/update_image.sh "Jarvis" envs/overlay/dev nginx ${{ github.event.client_payload.image_tag }}
+          bash .github/scripts/update_image.sh "Jarvis" envs/overlay/dev nginx ${{ github.event.client_payload.image_tag }}
           # git config --global user.name "Jarvis"
           # git config --global user.email "jarvis@starkindustries.com"
           # pushd envs/overlay/dev
