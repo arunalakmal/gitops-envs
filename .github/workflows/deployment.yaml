@@ -19,7 +19,7 @@ jobs:
         run: |
           echo deploying to dev environment...!!!
           kustomize version
-          ls && pwd
+          ls
           # pushd envs/overlay/dev
           # pwd
           # kustomize edit set image nginx:1.0.2
