@@ -9,7 +9,6 @@ jobs:
       - name: install kustomize
         run: |
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-          kustomize version
   deploy_to_dev:
     runs-on: ubuntu-latest
     name: Deploying to development environment
@@ -17,7 +16,15 @@ jobs:
     needs: [setup_kustomize]
     steps:
       - name: Dev deployment 
-        run: echo deploying to dev environment...!!!
+        run: |
+          echo deploying to dev environment...!!!
+          kustomize version
+          pushd envs/overlay/dev
+          pwd
+          kustomize edit set image nginx:1.0.2
+          cat kustomization.yaml
+          popd
+          pwd
   deploy_to_stage:
     runs-on: ubuntu-latest
     name: Deploying to staging environment
