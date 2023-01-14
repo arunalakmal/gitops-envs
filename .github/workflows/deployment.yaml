@@ -1,5 +1,11 @@
 name: Environment Deployment 
 on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "image tag"
+        required: true
+  repository_dispatch:
   push:
 jobs:
   setup_kustomize:
@@ -16,13 +22,27 @@ jobs:
     needs: [setup_kustomize]
     steps:
       - uses: actions/checkout@v2
-      - name: Dev deployment 
+      - name: Dev manual deployment
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           echo deploying to dev environment...!!!
           git config --global user.name "Jarvis"
           git config --global user.email "jarvis@starkindustries.com"
           pushd envs/overlay/dev
-          kustomize edit set image nginx:1.0.2
+          kustomize edit set image nginx:'${{ github.event.inputs.image_tag }}'
+          popd
+          git add .
+          git commit -m "Image updated"
+          git push
+      - uses: actions/checkout@v2
+      - name: Dev workflow deployment
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          echo deploying to dev environment...!!!
+          git config --global user.name "Jarvis"
+          git config --global user.email "jarvis@starkindustries.com"
+          pushd envs/overlay/dev
+          kustomize edit set image nginx:'${{ github.event.client_payload.image_tag }}'
           popd
           git add .
           git commit -m "Image updated"
