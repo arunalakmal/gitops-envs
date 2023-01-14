@@ -1,4 +1,4 @@
-
+#!/usr/bin/env bash
 BOT_NAME=$1
 PATH=$2
 IMG=$3
