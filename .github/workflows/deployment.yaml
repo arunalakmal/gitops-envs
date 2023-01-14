@@ -19,6 +19,7 @@ jobs:
         run: |
           echo deploying to dev environment...!!!
           kustomize version
+          pwd
           ls -al
           pushd envs/overlay/dev
           pwd
