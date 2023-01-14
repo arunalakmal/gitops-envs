@@ -6,7 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     name: setting Kustomize
     steps:
-      - uses: actions/checkout@v2
       - name: install kustomize
         run: |
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
@@ -16,6 +15,7 @@ jobs:
     environment: dev
     needs: [setup_kustomize]
     steps:
+      - uses: actions/checkout@v2
       - name: Dev deployment 
         run: |
           echo deploying to dev environment...!!!
