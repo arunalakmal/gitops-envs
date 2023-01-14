@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     name: setting Kustomize
     steps:
-      - name: install kustomize
-        run: |
-          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+      - uses: arunalakmal/kustomize_actions@main
+        with:
+          install: true
   deploy_to_dev:
     runs-on: ubuntu-latest
     name: Deploying to development environment
@@ -22,19 +22,27 @@ jobs:
     needs: [setup_kustomize]
     steps:
       - uses: actions/checkout@v2
-      - name: Dev manual deployment
+      - uses: arunalakmal/kustomize_actions@main
+        with:
+          install: false
+          bot-name: "AutoBot"
+          path: "envs/overlay/dev"
+          image: "nginx"
+          event_type: ${{ github.event.inputs.image_tag }}
         if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          echo deploying to dev environment...!!!
-          bash .github/scripts/update_image.sh "Jarvis" envs/overlay/dev nginx ${{ github.event.inputs.image_tag }}
-          # git config --global user.name "Jarvis"
-          # git config --global user.email "jarvis@starkindustries.com"
-          # pushd envs/overlay/dev
-          # kustomize edit set image nginx:'${{ github.event.inputs.image_tag }}'
-          # popd
-          # git add .
-          # git commit -m "Image updated"
-          # git push
+      # - name: Dev manual deployment
+      #   if: ${{ github.event_name == 'workflow_dispatch' }}
+      #   run: |
+      #     echo deploying to dev environment...!!!
+      #     bash .github/scripts/update_image.sh "Jarvis" envs/overlay/dev nginx ${{ github.event.inputs.image_tag }}
+      #     # git config --global user.name "Jarvis"
+      #     # git config --global user.email "jarvis@starkindustries.com"
+      #     # pushd envs/overlay/dev
+      #     # kustomize edit set image nginx:'${{ github.event.inputs.image_tag }}'
+      #     # popd
+      #     # git add .
+      #     # git commit -m "Image updated"
+      #     # git push
       - uses: actions/checkout@v2
       - name: Dev workflow deployment
         if: ${{ github.event_name == 'repository_dispatch' }}
