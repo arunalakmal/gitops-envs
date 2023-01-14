@@ -19,12 +19,13 @@ jobs:
         run: |
           echo deploying to dev environment...!!!
           kustomize version
-          pushd envs/overlay/dev
-          pwd
-          kustomize edit set image nginx:1.0.2
-          cat kustomization.yaml
-          popd
-          pwd
+          ls && pwd
+          # pushd envs/overlay/dev
+          # pwd
+          # kustomize edit set image nginx:1.0.2
+          # cat kustomization.yaml
+          # popd
+          # pwd
   deploy_to_stage:
     runs-on: ubuntu-latest
     name: Deploying to staging environment
