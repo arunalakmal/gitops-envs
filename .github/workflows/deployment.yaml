@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     name: setting Kustomize
     steps:
-      - uses: arunalakmal/kustomize_actions@main
-        with:
-          install: true
+      - name: install kustomize
+        run: |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
   deploy_to_dev:
     runs-on: ubuntu-latest
     name: Deploying to development environment
@@ -22,41 +22,31 @@ jobs:
     needs: [setup_kustomize]
     steps:
       - uses: actions/checkout@v2
-      - uses: arunalakmal/kustomize_actions@main
-        with:
-          install: false
-          bot-name: "AutoBot"
-          path: "envs/overlay/dev"
-          image: "nginx"
-          event_type: ${{ github.event.inputs.image_tag }}
+      - name: Dev manual deployment
         if: ${{ github.event_name == 'workflow_dispatch' }}
-      # - name: Dev manual deployment
-      #   if: ${{ github.event_name == 'workflow_dispatch' }}
-      #   run: |
-      #     echo deploying to dev environment...!!!
-      #     bash .github/scripts/update_image.sh "Jarvis" envs/overlay/dev nginx ${{ github.event.inputs.image_tag }}
-      #     # git config --global user.name "Jarvis"
-      #     # git config --global user.email "jarvis@starkindustries.com"
-      #     # pushd envs/overlay/dev
-      #     # kustomize edit set image nginx:'${{ github.event.inputs.image_tag }}'
-      #     # popd
-      #     # git add .
-      #     # git commit -m "Image updated"
-      #     # git push
+        run: |
+          echo deploying to dev environment...!!!
+          git config --global user.name "Jarvis"
+          git config --global user.email "jarvis@starkindustries.com"
+          pushd envs/overlay/dev
+          kustomize edit set image nginx:'${{ github.event.inputs.image_tag }}'
+          popd
+          git add .
+          git commit -m "Image updated"
+          git push
       - uses: actions/checkout@v2
       - name: Dev workflow deployment
         if: ${{ github.event_name == 'repository_dispatch' }}
         run: |
           echo deploying to dev environment...!!!
-          bash .github/scripts/update_image.sh "Jarvis" envs/overlay/dev nginx ${{ github.event.client_payload.image_tag }}
-          # git config --global user.name "Jarvis"
-          # git config --global user.email "jarvis@starkindustries.com"
-          # pushd envs/overlay/dev
-          # kustomize edit set image nginx:'${{ github.event.client_payload.image_tag }}'
-          # popd
-          # git add .
-          # git commit -m "Image updated"
-          # git push
+          git config --global user.name "Jarvis"
+          git config --global user.email "jarvis@starkindustries.com"
+          pushd envs/overlay/dev
+          kustomize edit set image nginx:'${{ github.event.client_payload.image_tag }}'
+          popd
+          git add .
+          git commit -m "Image updated"
+          git push
   deploy_to_stage:
     runs-on: ubuntu-latest
     name: Deploying to staging environment
