@@ -31,13 +31,12 @@ jobs:
           pushd envs/overlay/dev
           kustomize edit set image nginx:'${{ github.event.inputs.image_tag }}'
           popd
-          git pull
           git add .
           git commit -m "Image updated"
           git push
       - uses: actions/checkout@v2
       - name: Dev workflow deployment
-        if: ${{ github.event_name == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'repository_dispatch' }}
         run: |
           echo deploying to dev environment...!!!
           git config --global user.name "Jarvis"
