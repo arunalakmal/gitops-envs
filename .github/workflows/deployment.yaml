@@ -8,18 +8,18 @@ on:
   repository_dispatch:
   # push:
 jobs:
-  setup_kustomize:
-    runs-on: ubuntu-latest
-    name: setting Kustomize
-    steps:
-      - name: install kustomize
-        run: |
-          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+  # setup_kustomize:
+  #   runs-on: ubuntu-latest
+  #   name: setting Kustomize
+  #   steps:
+  #     - name: install kustomize
+  #       run: |
+  #         curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
   deploy_to_dev:
     runs-on: ubuntu-latest
     name: Deploying to development environment
     environment: dev
-    needs: [setup_kustomize]
+    # needs: [setup_kustomize]
     steps:
       - uses: actions/checkout@v2
       - name: Dev manual deployment
