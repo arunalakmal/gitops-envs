@@ -26,6 +26,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           echo deploying to dev environment...!!!
+          echo $PATH
           git config --global user.name "Jarvis"
           git config --global user.email "jarvis@starkindustries.com"
           pushd envs/overlay/dev
