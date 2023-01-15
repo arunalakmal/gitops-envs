@@ -24,17 +24,23 @@ jobs:
       - uses: actions/checkout@v2
       - name: Dev manual deployment
         if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          echo deploying to dev environment...!!!
-          echo $PATH
-          git config --global user.name "Jarvis"
-          git config --global user.email "jarvis@starkindustries.com"
-          pushd envs/overlay/dev
-          kustomize edit set image nginx:'${{ github.event.inputs.image_tag }}'
-          popd
-          git add .
-          git commit -m "Image updated"
-          git push
+        uses: arunalakmal/kustomize_actions@main
+        with:
+          bot-name: "Jarvis"
+          path: "envs/overlay/dev"
+          image: "nginx"
+          event_type: '${{ github.event.inputs.image_tag }}'
+          version: "v4.5.7"
+        # run: |
+        #   echo deploying to dev environment...!!!
+        #   git config --global user.name "Jarvis"
+        #   git config --global user.email "jarvis@starkindustries.com"
+        #   pushd envs/overlay/dev
+        #   kustomize edit set image nginx:'${{ github.event.inputs.image_tag }}'
+        #   popd
+        #   git add .
+        #   git commit -m "Image updated"
+        #   git push
       - uses: actions/checkout@v2
       - name: Dev workflow deployment
         if: ${{ github.event_name == 'repository_dispatch' }}
