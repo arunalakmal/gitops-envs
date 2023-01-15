@@ -8,72 +8,77 @@ on:
   repository_dispatch:
   # push:
 jobs:
-  # setup_kustomize:
-  #   runs-on: ubuntu-latest
-  #   name: setting Kustomize
-  #   steps:
-  #     - name: install kustomize
-  #       run: |
-  #         curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
   deploy_to_dev:
     runs-on: ubuntu-latest
     name: Deploying to development environment
     environment: dev
-    # needs: [setup_kustomize]
     steps:
       - uses: actions/checkout@v2
       - name: Dev manual deployment
         if: ${{ github.event_name == 'workflow_dispatch' }}
         uses: arunalakmal/kustomize_actions@main
         with:
-          bot-name: "Jarvis"
+          bot_name: "Jarvis"
           path: "envs/overlay/dev"
           image: "nginx"
           event_type: '${{ github.event.inputs.image_tag }}'
           version: "v4.5.7"
-        # run: |
-        #   echo deploying to dev environment...!!!
-        #   git config --global user.name "Jarvis"
-        #   git config --global user.email "jarvis@starkindustries.com"
-        #   pushd envs/overlay/dev
-        #   kustomize edit set image nginx:'${{ github.event.inputs.image_tag }}'
-        #   popd
-        #   git add .
-        #   git commit -m "Image updated"
-        #   git push
-      - uses: actions/checkout@v2
       - name: Dev workflow deployment
         if: ${{ github.event_name == 'repository_dispatch' }}
         uses: arunalakmal/kustomize_actions@main
         with:
-          bot-name: "Jarvis"
+          bot_name: "Jarvis"
           path: "envs/overlay/dev"
           image: "nginx"
           event_type: '${{ github.event.client_payload.image_tag }}'
           version: "v4.5.7"
-        # run: |
-        #   echo deploying to dev environment...!!!
-        #   git config --global user.name "Jarvis"
-        #   git config --global user.email "jarvis@starkindustries.com"
-        #   pushd envs/overlay/dev
-        #   kustomize edit set image nginx:'${{ github.event.client_payload.image_tag }}'
-        #   popd
-        #   git add .
-        #   git commit -m "Image updated"
-        #   git push
   deploy_to_stage:
     runs-on: ubuntu-latest
     name: Deploying to staging environment
     environment: stage
     needs: [deploy_to_dev]
     steps:
-      - name: Staging deployment 
-        run: echo deploying to stage environment...!!!
+      - uses: actions/checkout@v2
+      - name: Staging manual deployment 
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: arunalakmal/kustomize_actions@main
+        with:
+          bot_name: "Jarvis"
+          path: "envs/overlay/stage"
+          image: "nginx"
+          event_type: '${{ github.event.inputs.image_tag }}'
+          version: "v4.5.7"
+      - name: Dev workflow deployment
+        if: ${{ github.event_name == 'repository_dispatch' }}
+        uses: arunalakmal/kustomize_actions@main
+        with:
+          bot_name: "Jarvis"
+          path: "envs/overlay/stage"
+          image: "nginx"
+          event_type: '${{ github.event.client_payload.image_tag }}'
+          version: "v4.5.7"
   deploy_to_prod:
     runs-on: ubuntu-latest
     name: Deploying to prod environment
     environment: prod
     needs: [deploy_to_stage]
     steps:
-      - name: Production deployment 
-        run: echo deploying to prod environment...!!!
+      - uses: actions/checkout@v2
+      - name: Production manual deployment 
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: arunalakmal/kustomize_actions@main
+        with:
+          bot_name: "Jarvis"
+          path: "envs/overlay/prod"
+          image: "nginx"
+          event_type: '${{ github.event.inputs.image_tag }}'
+          version: "v4.5.7"
+      - name: Prodution workflow deployment
+        if: ${{ github.event_name == 'repository_dispatch' }}
+        uses: arunalakmal/kustomize_actions@main
+        with:
+          bot_name: "Jarvis"
+          path: "envs/overlay/prod"
+          image: "nginx"
+          event_type: '${{ github.event.client_payload.image_tag }}'
+          version: "v4.5.7"
