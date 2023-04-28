@@ -5,9 +5,9 @@ on:
       image_tag:
         description: "image tag"
         required: true
-      image_repo:
-        description: "image repo"
-        required: true
+      #image_repo:
+        #description: "image repo"
+        #required: true
   repository_dispatch:
   # push:
 jobs:
