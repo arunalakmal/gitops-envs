@@ -24,7 +24,7 @@ jobs:
           bot_name: "Jarvis"
           path: "envs/overlay/dev"
           image: '${{ github.event.inputs.image_repo }}'
-          event_type: '${{ github.event.inputs.image_tag }}'
+          tag: '${{ github.event.inputs.image_tag }}'
           version: "v4.5.7"
       - name: Dev workflow deployment
         if: ${{ github.event_name == 'repository_dispatch' }}
@@ -33,7 +33,7 @@ jobs:
           bot_name: "Jarvis"
           path: "envs/overlay/dev"
           image: '${{ github.event.inputs.image_repo }}'
-          event_type: '${{ github.event.client_payload.image_tag }}'
+          tag: '${{ github.event.client_payload.image_tag }}'
           version: "v4.5.7"
   deploy_to_stage:
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
           bot_name: "Jarvis"
           path: "envs/overlay/stage"
           image: '${{ github.event.inputs.image_repo }}'
-          event_type: '${{ github.event.inputs.image_tag }}'
+          tag: '${{ github.event.inputs.image_tag }}'
           version: "v4.5.7"
       - name: Dev workflow deployment
         if: ${{ github.event_name == 'repository_dispatch' }}
@@ -58,7 +58,7 @@ jobs:
           bot_name: "Jarvis"
           path: "envs/overlay/stage"
           image: '${{ github.event.inputs.image_repo }}'
-          event_type: '${{ github.event.client_payload.image_tag }}'
+          tag: '${{ github.event.client_payload.image_tag }}'
           version: "v4.5.7"
   deploy_to_prod:
     runs-on: ubuntu-latest
@@ -74,7 +74,7 @@ jobs:
           bot_name: "Jarvis"
           path: "envs/overlay/prod"
           image: '${{ github.event.inputs.image_repo }}'
-          event_type: '${{ github.event.inputs.image_tag }}'
+          tag: '${{ github.event.inputs.image_tag }}'
           version: "v4.5.7"
       - name: Prodution workflow deployment
         if: ${{ github.event_name == 'repository_dispatch' }}
@@ -83,5 +83,5 @@ jobs:
           bot_name: "Jarvis"
           path: "envs/overlay/prod"
           image: '${{ github.event.inputs.image_repo }}'
-          event_type: '${{ github.event.client_payload.image_tag }}'
+          tag: '${{ github.event.client_payload.image_tag }}'
           version: "v4.5.7"
