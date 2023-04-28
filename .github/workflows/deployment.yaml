@@ -23,7 +23,7 @@ jobs:
         with:
           bot_name: "Jarvis"
           path: "envs/overlay/dev"
-          image: '${{ github.event.inputs.image_repo }}'
+          image: '${{ github.event.client_payload.image_repo }}'
           tag: '${{ github.event.inputs.image_tag }}'
           version: "v4.5.7"
       - name: Dev workflow deployment
